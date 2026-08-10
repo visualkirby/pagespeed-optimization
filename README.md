@@ -42,6 +42,16 @@ Most PageSpeed advice stops at generic checklists (compress images, minify CSS).
 
 ---
 
+# Weekly Tracking
+
+Ongoing PSI snapshots captured weekly, separate from the fixed-point case study above. Real fluctuations get logged here, not smoothed over -- including regressions.
+
+| Date | Mobile Perf | Desktop Perf | Accessibility (m/d) | Best Practices | SEO | Notes | Screenshots |
+|---|---|---|---|---|---|---|---|
+| 2026-08-10 | **64** | 97 | 94 / 95 | 100 / 100 | 100 / 100 | Mobile Performance down from the 77 documented 2026-07-29 -- real ~13-point regression, not yet root-caused. Desktop holds steady. | [Mobile](screenshots/psi-mobile-2026-08-10.png) · [Desktop](screenshots/psi-desktop-2026-08-10.png) |
+
+---
+
 # Tools Used
 
 - Google PageSpeed Insights / Lighthouse
