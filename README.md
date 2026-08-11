@@ -49,6 +49,7 @@ Ongoing PSI snapshots captured weekly, separate from the fixed-point case study 
 | Date | Mobile Perf | Desktop Perf | Accessibility (m/d) | Best Practices | SEO | Notes | Screenshots |
 |---|---|---|---|---|---|---|---|
 | 2026-08-10 | **64** | 97 | 94 / 95 | 100 / 100 | 100 / 100 | Mobile Performance down from the 77 documented 2026-07-29 -- real ~13-point regression, not yet root-caused. Desktop holds steady. | [Mobile](screenshots/psi-mobile-2026-08-10.png) · [Desktop](screenshots/psi-desktop-2026-08-10.png) |
+| 2026-08-10 (fix) | 62 | 97 | 94 | 100 / 100 | 100 / 100 | **Root cause found and fixed same day**: CookieAdmin's Notice Type had reverted from the documented winning "Box" style back to "Popup" -- the full expanded preference panel (613x506px, all 4 cookie categories) was rendering visible on every page load and being measured as the page's LCP element (2,320ms render delay). Switched back to Box + Bottom Right. Confirmed fixed: LCP element is now the real hero image, not the cookie modal; mobile TBT dropped 250ms -> 30ms. Overall mobile Performance score itself stayed noisy (9.8s reported LCP vs ~2.35s of accounted subparts, run-to-run) -- a separate, real measurement-variance issue not yet investigated, distinct from the cookie-banner bug. | [Mobile PSI screenshot not re-captured this pass] |
 
 ---
 
