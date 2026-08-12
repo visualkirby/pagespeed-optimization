@@ -20,7 +20,7 @@ Scrub policy per the plan doc: **no scrubbing needed** -- real before/after data
 ### What Is Next
 - Not yet committed/pushed -- do that as part of closing out today's session
 - Continue the Weekly Tracking table on the planned weekly cadence (see the new `google-tools-weekly` skill)
-- **New, real, not yet investigated: mobile LCP measurement noise.** After the cookie-banner fix below, mobile Performance is still inconsistent run-to-run (60s-64 range) and reported LCP (~9.8s) is far larger than the sum of its own breakdown subparts (~2.35s) -- something is stalling intermittently that Lighthouse isn't cleanly attributing. Separate issue from the cookie banner bug, worth a dedicated look.
+- ~~New, real, not yet investigated: mobile LCP measurement noise~~ -- **RESOLVED 2026-08-12**, see that session's entry below. Not a site bug.
 
 ## Session: 2026-08-10 (2) -- cookie-banner LCP regression root-caused and fixed
 
@@ -33,3 +33,19 @@ Scrub policy per the plan doc: **no scrubbing needed** -- real before/after data
 **Not fully resolved:** the overall mobile Performance *score* is still noisy post-fix (64 before, 62 immediately after -- statistically within the same noise band) and reported LCP (~9.8s) still far exceeds the sum of its own breakdown subparts (~2.35s), across multiple consecutive runs. This is a separate, real phenomenon from the cookie-banner bug -- something is intermittently stalling that Lighthouse's LCP breakdown isn't cleanly attributing to a subpart. Flagged as new open work above, not chased further today since the actual ask (root-cause and fix the cookie-banner LCP issue) is done.
 
 Logged in `README.md`'s Weekly Tracking table as a same-day follow-up row rather than editing the earlier row, per the standing "show ups and downs, don't smooth over" instruction.
+
+---
+
+## Session: 2026-08-12 -- LCP breakdown/reported-LCP mismatch resolved, not a site bug
+
+**The mobile LCP measurement noise flagged 2026-08-10 (deferred 2026-08-11 when PSI itself was running abnormally slowly) is resolved.** Fresh mobile run today (Performance 65) showed the same pattern documented earlier: LCP breakdown insight's subparts (Time to first byte 60ms + Resource load delay 160ms + Resource load duration 180ms + Element render delay 1,960ms = 2.36s total) sum to far less than the reported top-line LCP (7.9s this run).
+
+**Root cause confirmed via [Lighthouse's own GitHub issue tracker](https://github.com/GoogleChrome/lighthouse/issues/16769):** this is documented, expected Lighthouse behavior, not a real page defect. The top-line LCP metric is *simulated* -- mathematically projected for Slow 4G/mobile CPU throttling using Lighthouse's Lantern network model. The "LCP breakdown" insight's subparts, by contrast, are *observed* -- raw, unthrottled timings pulled directly from the performance trace. Lighthouse can't accurately simulate throttled subpart durations, so the two numbers are never meant to sum to the same total. This also explains the run-to-run Performance score noise seen since the cookie-banner fix: the throttling simulation model has inherent run-to-run variance, independent of anything on the site itself.
+
+Also confirmed: LCP element correctly remains the real hero image (`div.wp-block-group > img`), not the cookie modal -- the 08-10 (2) fix is holding. **No further action needed on this front.**
+
+Logged as a new row in `README.md`'s Weekly Tracking table (Mobile 65, desktop not re-run this pass) with 2 screenshots (scores + LCP breakdown detail).
+
+### What Is Next
+- Continue the Weekly Tracking table on the planned weekly cadence (`google-tools-weekly`)
+- Commit and push this session's README/context.md/screenshot changes
