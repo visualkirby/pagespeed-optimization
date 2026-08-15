@@ -52,6 +52,20 @@ Ongoing PSI snapshots captured weekly, separate from the fixed-point case study 
 | 2026-08-10 (fix) | 62 | 97 | 94 | 100 / 100 | 100 / 100 | **Root cause found and fixed same day**: CookieAdmin's Notice Type had reverted from the documented winning "Box" style back to "Popup" -- the full expanded preference panel (613x506px, all 4 cookie categories) was rendering visible on every page load and being measured as the page's LCP element (2,320ms render delay). Switched back to Box + Bottom Right. Confirmed fixed: LCP element is now the real hero image, not the cookie modal; mobile TBT dropped 250ms -> 30ms. Overall mobile Performance score itself stayed noisy (9.8s reported LCP vs ~2.35s of accounted subparts, run-to-run) -- a separate, real measurement-variance issue not yet investigated, distinct from the cookie-banner bug. | [Mobile PSI screenshot not re-captured this pass] |
 | 2026-08-12 | 65 | -- | 94 | 100 / 100 | 100 / 100 | **LCP breakdown mystery resolved -- not a site bug.** Same pattern recurred (LCP breakdown subparts: TTFB 60ms + load delay 160ms + load duration 180ms + render delay 1,960ms = 2.36s total, vs. reported LCP of 7.9s). Confirmed via [Lighthouse's own GitHub issue tracker](https://github.com/GoogleChrome/lighthouse/issues/16769) this is documented, expected behavior: the top-line LCP metric is *simulated* (mathematically projected for Slow 4G throttling), while the "LCP breakdown" insight's subparts are *observed* (raw, unthrottled trace timings) -- Lighthouse can't accurately simulate the subparts, so the two numbers are never meant to sum to the same total. This also explains the run-to-run score noise (the throttling simulation model has inherent variance). LCP element correctly remains the real hero image (cookie-banner fix holding). No further action needed on this front. | [Scores](screenshots/psi-mobile-2026-08-12-scores.png) · [LCP breakdown](screenshots/psi-mobile-2026-08-12-lcp-breakdown.png) |
 
+**2026-08-10, mobile regression found:**
+
+![Mobile PSI 2026-08-10](screenshots/psi-mobile-2026-08-10.png)
+
+**2026-08-10, desktop holding steady:**
+
+![Desktop PSI 2026-08-10](screenshots/psi-desktop-2026-08-10.png)
+
+**2026-08-12, scores after the fix confirmed holding:**
+
+![Mobile PSI 2026-08-12 Scores](screenshots/psi-mobile-2026-08-12-scores.png)
+
+![Mobile PSI 2026-08-12 LCP Breakdown](screenshots/psi-mobile-2026-08-12-lcp-breakdown.png)
+
 ---
 
 # Tools Used
