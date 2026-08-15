@@ -18,15 +18,15 @@ Most PageSpeed advice stops at generic checklists (compress images, minify CSS).
 
 # What's Inside
 
-1️⃣ **Baseline audit** — Mobile Performance 63, Desktop Performance 51, with desktop's score traced to a single root cause: a theme zip corrupted by PowerShell's `Compress-Archive` embedding backslash paths.
+1️⃣ **Baseline audit:** Mobile Performance 63, Desktop Performance 51, with desktop's score traced to a single root cause: a theme zip corrupted by PowerShell's `Compress-Archive` embedding backslash paths.
 
-2️⃣ **Theme zip rebuild** — Switched the deploy pipeline to .NET's `ZipArchive` (forward-slash paths). Desktop Performance 51 → 97, Total Blocking Time 2,860ms → 30ms.
+2️⃣ **Theme zip rebuild:** Switched the deploy pipeline to .NET's `ZipArchive` (forward-slash paths). Desktop Performance 51 → 97, Total Blocking Time 2,860ms → 30ms.
 
-3️⃣ **Image pipeline decision** — Evaluated and rejected two paid/cloud image-optimization options in favor of EWWW Image Optimizer in local mode, keeping images served dynamically. Mobile Performance 63 → 76-77.
+3️⃣ **Image pipeline decision:** Evaluated and rejected two paid/cloud image-optimization options in favor of EWWW Image Optimizer in local mode, keeping images served dynamically. Mobile Performance 63 → 76-77.
 
-4️⃣ **Cookie banner A/B test** — Measured all three CookieAdmin display styles (Popup, Box, Footer) with real back-to-back PageSpeed runs rather than picking on preference. Box style won at 88 vs Popup's 76-77 and Footer's 74.
+4️⃣ **Cookie banner A/B test:** Measured all three CookieAdmin display styles (Popup, Box, Footer) with real back-to-back PageSpeed runs rather than picking on preference. Box style won at 88 vs Popup's 76-77 and Footer's 74.
 
-5️⃣ **Accessibility regression, root-caused** — The Box banner switch dropped Accessibility 90 → 88. Traced via Lighthouse's failing-elements tables to pre-existing contrast/sizing issues, fixed, and verified live via `getComputedStyle()` on the production page. Accessibility 88 → 93.
+5️⃣ **Accessibility regression, root-caused:** The Box banner switch dropped Accessibility 90 → 88. Traced via Lighthouse's failing-elements tables to pre-existing contrast/sizing issues, fixed, and verified live via `getComputedStyle()` on the production page. Accessibility 88 → 93.
 
 ---
 
